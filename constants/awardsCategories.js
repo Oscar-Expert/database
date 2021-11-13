@@ -1,0 +1,6 @@
+const AWARDS_CATEGORIES = {
+    PICTURE: 'PICTURE',
+    DIRECTOR: 'DIRECTOR',
+};
+
+module.exports = AWARDS_CATEGORIES;

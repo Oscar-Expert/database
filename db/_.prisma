@@ -1,0 +1,52 @@
+
+/////////////////////
+// AWARDS DATABASE //
+/////////////////////
+
+// NOTE: We aren't actually using this. This is just how the data was originally modeled and is for viewing only
+
+model DB_Movie {
+    id              String              @id @default(uuid())
+    wikiUrl         String              @unique
+    title           String      
+    year            Int
+    imdbUrl         String?
+    nominations     DB_Nomination[]     @relation("movie-nomination")
+}
+
+model DB_Person {
+    id              String              @id @default(uuid())
+    wikiUrl         String              @unique
+    name            String
+    nominations     DB_Nomination[]     @relation("person-nomination")
+}
+
+model DB_Nomination {
+    id              String          @id @default(uuid())
+    winner          Boolean         @default(false)
+    person          DB_Person       @relation("person-nomination", fields: [personId], references: [id])
+    personId        String
+    movie           DB_Movie        @relation("movie-nomination", fields: [movieId], references: [id])
+    movieId         String
+}
+
+model DB_AwardsBody {
+    id         String           @id @default(uuid())
+    name       String   
+    awards     DB_Award[]       @relation("awardsbody-award")
+}
+
+model DB_AwardsCategory {
+    id         String           @id @default(uuid())
+    name       String    
+    awards     DB_Award[]       @relation("awardscategory-award")
+}
+
+model DB_Award {
+    id                String             @id @default(uuid())
+    year              String  
+    awardsBody        DB_AwardsBody      @relation("awardsbody-award", fields: [awardsBodyId], references: [id])  
+    awardsBodyId      String
+    awardsCategory    DB_AwardsCategory  @relation("awardscategory-award", fields: [awardsCategoryId], references: [id])  
+    awardsCategoryId  String
+}

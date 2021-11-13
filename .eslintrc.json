@@ -1,7 +1,8 @@
 {
     "env": {
         "browser": true,
-        "node": true
+        "node": true,
+        "es6": true
     },
     "extends": "eslint:recommended",
     "parserOptions": {
@@ -10,7 +11,8 @@
         "sourceType": "module"
     },
     "globals": {
-        "App": true
+        "App": true,
+        "Promise": true
     },
     "rules": {
         "no-const-assign": "warn",

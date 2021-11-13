@@ -1,11 +1,14 @@
+require('dotenv').config();
 const mysql = require('mysql');
 
+console.log(process.env.LOCAL_HOST)
+
 const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: 'quellQL20!',
-    database: 'newdb',
-    port: 3306,
+    host: process.env.LOCAL_HOST,
+    user: process.env.LOCAL_USER,
+    password: process.env.LOCAL_PASSWORD,
+    database: process.env.LOCAL_DATABASE,
+    port: process.env.LOCAL_PORT,
 });
 
 connection.connect((err) => {
