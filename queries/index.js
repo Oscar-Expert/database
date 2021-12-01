@@ -2,9 +2,9 @@ const db = require('../db/connect');
 
 const queries = {};
 
-////////////
-// CREATE //
-////////////
+//////////////////////////
+///////// CREATE /////////
+//////////////////////////
 
 queries.createMovie = (year, movieWikiUrl, title) => new Promise((resolve, reject) => {
     db.query(`
@@ -45,48 +45,21 @@ queries.createNomination = (winner, personId, movieId, awardId) => new Promise((
 }).catch(e=>console.error('error',e))
 
 
-queries.createAwardsBody = (name) => new Promise((resolve, reject) => {
-    db.query(`
-        INSERT IGNORE INTO AwardsBody
-        (name)
-        VALUES
-        ("${name}")
-    `, (err, res) => {
-        if (err) reject({ status: 'error', data: err });
-        if (res) resolve({ status: 'succes', data: res });
-    });
-}).catch(e=>console.error('error',e))
-
-
-queries.createAwardsCategory = (name) => new Promise((resolve, reject) => {
-    db.query(`
-        INSERT IGNORE INTO AwardsCategory
-        (name)
-        VALUES
-        ("${name}")
-    `, (err, res) => {
-        if (err) reject({ status: 'error', data: err });
-        if (res) resolve({ status: 'succes', data: res });
-    });
-}).catch(e=>console.error('error',e))
-
-
-queries.createAward = (year, awardsBodyId, awardsCategoryId) => new Promise((resolve, reject) => {
+queries.createAward = (year, awardsBody, awardsCategory) => new Promise((resolve, reject) => {
     db.query(`
         INSERT IGNORE INTO Award
-        (year, awardsBodyId, awardsCategoryId)
+        (year, awardsBody, awardsCategory)
         VALUES
-        (${year}, ${awardsBodyId}, ${awardsCategoryId})
+        (${year}, "${awardsBody}", "${awardsCategory}")
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         if (res) resolve({ status: 'succes', data: res });
     });
 }).catch(e=>console.error('error',e))
 
-
-/////////
-// GET //
-/////////
+///////////////////////////////
+///////////// GET /////////////
+///////////////////////////////
 
 queries.getMovieId = (wikiUrl) => new Promise((resolve, reject) => {
     db.query(`
@@ -99,6 +72,7 @@ queries.getMovieId = (wikiUrl) => new Promise((resolve, reject) => {
     })
 }).catch(e=>console.error('error',e))
 
+
 queries.getPersonId = (wikiUrl) => new Promise((resolve, reject) => {
     db.query(`
         SELECT id FROM Person
@@ -110,39 +84,67 @@ queries.getPersonId = (wikiUrl) => new Promise((resolve, reject) => {
     })
 }).catch(e=>console.error('error',e))
 
-queries.getAwardsBodyId = (name) => new Promise((resolve, reject) => {
-    db.query(`
-        SELECT id FROM AwardsBody
-        WHERE name="${name}"
-    `, (err, res) => {
-        if (err) reject({ status: 'error', data: err });
-        const id = Object.values(res[0])[0];
-        if (res) resolve({ status: 'succes', data: id });
-    })
-}).catch(e=>console.error('error',e))
 
-queries.getAwardsCategoryId = (name) => new Promise((resolve, reject) => {
-    db.query(`
-        SELECT id FROM AwardsCategory
-        WHERE name="${name}"
-    `, (err, res) => {
-        if (err) reject({ status: 'error', data: err });
-        const id = Object.values(res[0])[0];
-        if (res) resolve({ status: 'succes', data: id });
-    })
-}).catch(e=>console.error('error',e))
-
-queries.getAwardId = (year, awardsBodyId, awardsCategoryId) => new Promise((resolve, reject) => {
+queries.getAwardId = (year, awardsBody, awardsCategory) => new Promise((resolve, reject) => {
     db.query(`
         SELECT * FROM Award
         WHERE year=${year}
-        AND awardsBodyId=${awardsBodyId}
-        AND awardsCategoryId=${awardsCategoryId}
+        AND awardsBody="${awardsBody}"
+        AND awardsCategory="${awardsCategory}"
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         const id = Object.values(res[0])[0];
         if (res) resolve({ status: 'succes', data: id });
     })
 }).catch(e=>console.error('error',e))
+
+
+///////////////////////////////
+/////////// DELETE ////////////
+///////////////////////////////
+
+queries.deleteAllMovies = () => new Promise((resolve, reject) => {
+    db.query(`
+        DELETE FROM Movie
+        WHERE id>0
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+}).catch(e=>console.error('error',e))
+
+
+queries.deleteAllPeople = () => new Promise((resolve, reject) => {
+    db.query(`
+        DELETE FROM Person
+        WHERE id>0
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+}).catch(e=>console.error('error',e))
+
+
+queries.deleteAllAwards = () => new Promise((resolve, reject) => {
+    db.query(`
+        DELETE FROM Award
+        WHERE id>0
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+}).catch(e=>console.error('error',e))
+
+
+queries.deleteAllNominations = () => new Promise((resolve, reject) => {
+    db.query(`
+        DELETE FROM Nomination
+        WHERE id>0
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+}).catch(e=>console.error('error',e))
+
 
 module.exports = queries;

@@ -6,7 +6,10 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/*",
-    "airtable": "node airtable"
+    "airtable": "node airtable",
+    "delete_all": "node scripts/deleteAll",
+    "AMPAS_PIC": "node scripts/AMPAS/Picture",
+    "AMPAS_DIR": "node scripts/AMPAS/Director"
   },
   "repository": {
     "type": "git",
