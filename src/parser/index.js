@@ -102,8 +102,9 @@ parser.parseTable = function (element) {
           var val = allSpans[spanIdx.toString()][1];
           // val is the values in first column (2011(84th))
           // But it's logging it a number of times so I think it's keeping track of how many cells that left column covers
-          csvLine.push(val);
-
+          if (val[0] !== '[') {
+            csvLine.push(val.slice(0, 4)); // pushing the YEAR
+          }
           // decrease by 1 and remove if all rows are covered
           allSpans[spanIdx.toString()][0] -= 1;
           if (allSpans[spanIdx.toString()][0] == 0) {
@@ -127,10 +128,16 @@ parser.parseTable = function (element) {
                 hrefs += ' ' + href;
             }
           }
-          // JJJ CSV PUSH
-          // This is every cell except it seems to only log something like (2011(84th)) once
-          csvLine.push(cellText);
-          csvLine.push(hrefs)
+
+          // Doesn't make cell from lines that start with [ or #, and trims year rows that say (34th)
+          if (cellText[0] === '['  || cellText[0] === '#') {
+            // do nothing
+          } else if (winner && cellText[5] === '('  && cellText[cellText.length-1] === ')') {
+            csvLine.push(cellText.slice(0, 4));
+          } else {
+            csvLine.push(cellText);
+            csvLine.push(hrefs)
+          }
         }
         if (rowSpan > 1) {
           allSpans[spanIdx.toString()] = [rowSpan - 1, cellText];

@@ -181,6 +181,7 @@ ui.handleResponse = function (responseText) {
     throw new Error('Could not find any tables on the given Wiki page :(')
   }
 
+  var allTableEls = [];
   // loop tables
   var tablesLen = tables.length;
   for (var i = 0; i < tablesLen; i++) {
@@ -189,19 +190,39 @@ ui.handleResponse = function (responseText) {
     // JJJ - SEE parser.parseTable
     var csv = this.parser.parseTable.call(this, tableEl);
 
-    var blockId = i + 1;
-    var csvContainer = '<div class="mb-5">' +
-      '<h5>Table ' + blockId + '</h5>' +
-      '<textarea id="table-' + blockId + '" class="table2csv-output__csv form-control" rows="7">' + csv + '</textarea>' +
-      '<div class="mt-2">' +
-      '<button class="table2csv-output__download-btn btn btn-secondary mr-2" data-download-target="table-' + blockId + '">Download</button>' +
-      '<button class="table2csv-output__copy-btn btn btn-secondary" data-clipboard-target="#table-' + blockId + '">Copy to clipboard</button>' +
-      '<span class="table2csv-output__copy-msg ml-2">Copied!</span>' +
-      '</div>' +
-      '</div>';
-    helper.addClass('.table2csv-output', 'table2csv-output--active');
-    document.querySelector('.table2csv-output__result').insertAdjacentHTML('beforeend', csvContainer);
+    allTableEls.push(csv);
+
+    // var blockId = i + 1;
+    // var csvContainer = '<div class="mb-5">' +
+    //   '<h5>Table ' + blockId + '</h5>' +
+    //   '<textarea id="table-' + blockId + '" class="table2csv-output__csv form-control" rows="7">' + csv + '</textarea>' +
+    //   '<div class="mt-2">' +
+    //   '<button class="table2csv-output__download-btn btn btn-secondary mr-2" data-download-target="table-' + blockId + '">Download</button>' +
+    //   '<button class="table2csv-output__copy-btn btn btn-secondary" data-clipboard-target="#table-' + blockId + '">Copy to clipboard</button>' +
+    //   '<span class="table2csv-output__copy-msg ml-2">Copied!</span>' +
+    //   '</div>' +
+    //   '</div>';
+    // helper.addClass('.table2csv-output', 'table2csv-output--active');
+    // document.querySelector('.table2csv-output__result').insertAdjacentHTML('beforeend', csvContainer);
   }
+
+  // Moved this outside so everything is in one CSV file
+  var blockId = i + 1;
+  var csvContainer = '<div class="mb-5">' +
+    '<h5>Table ' + blockId + '</h5>' +
+    '<textarea id="table-' + blockId + '" class="table2csv-output__csv form-control" rows="7">' + allTableEls + '</textarea>' +
+    '<div class="mt-2">' +
+    '<button class="table2csv-output__download-btn btn btn-secondary mr-2" data-download-target="table-' + blockId + '">Download</button>' +
+    '<button class="table2csv-output__copy-btn btn btn-secondary" data-clipboard-target="#table-' + blockId + '">Copy to clipboard</button>' +
+    '<span class="table2csv-output__copy-msg ml-2">Copied!</span>' +
+    '</div>' +
+    '</div>';
+  helper.addClass('.table2csv-output', 'table2csv-output--active');
+  document.querySelector('.table2csv-output__result').insertAdjacentHTML('beforeend', csvContainer);
+
+
+
+
 
   // download btn event handler
   var dlBtns = document.getElementsByClassName('table2csv-output__download-btn');
