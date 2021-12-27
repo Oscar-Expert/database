@@ -1,4 +1,5 @@
 const db = require('../db/connect');
+const fs = require('fs');
 
 const queries = {};
 
@@ -144,6 +145,57 @@ queries.deleteAllNominations = () => new Promise((resolve, reject) => {
         if (err) reject({ status: 'error', data: err });
         if (res) resolve({ status: 'succes' });
     })
+}).catch(e=>console.error('error',e))
+
+
+///////////////////////////////
+/////////// REFRESH ///////////
+///////////////////////////////
+
+
+queries.dropAllTables = () => new Promise((resolve, reject) => {
+    db.query(`
+        DROP TABLE Nomination
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+    db.query(`
+        DROP TABLE Award
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+    db.query(`
+        DROP TABLE Person
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+    db.query(`
+        DROP TABLE Movie
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        if (res) resolve({ status: 'succes' });
+    })
+}).catch(e=>console.error('error',e))
+
+queries.refreshAllTables = () => new Promise((resolve, reject) => {
+    const sql = fs.readFileSync('db/db.sql').toString();
+    const sqlArray = sql.split('--');
+
+    const runAsync = async(sql) => {
+        await db.query(sql, (err, res) => {
+            if (err) reject({ status: 'error', data: err });
+            if (res) resolve({ status: 'succes' });
+        })
+    }
+
+    for (let i=0; i<sqlArray.length; i++ ) {
+        const sql = '--' + sqlArray[i];
+        console.log('sql',sql)
+        runAsync(sql);
+    }
 }).catch(e=>console.error('error',e))
 
 

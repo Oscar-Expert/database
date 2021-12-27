@@ -49,13 +49,23 @@ CREATE TABLE `Award` (
         'DIRECTOR',
         'ACTOR',
         'ACTRESS',
-        'SUPPORTING_ACTOR',
-        'SUPPORTING_ACTRESS',
+        'SUPP_ACTOR',
+        'SUPP_ACTRESS',
+        'OG_SP',
+        'AD_SP',
+        'CINEMATOGRAPHY',
+        'EDITING',
+        'PD',
+        'COSTUME',
         'SOUND',
-        'SOUND_MIXING',
-        'SOUND_EDITING'
+        'VFX',
+        'SONG',
+        'SCORE',
+        'MAKEUP',
+        'INTERNATIONAL',
+        'DOCUMENTARY',
+        'ANIMATED'
     ) NOT NULL,
-
     PRIMARY KEY (`id`),
     CONSTRAINT UC_Award UNIQUE (year, awardsBody, awardsCategory)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;

@@ -7,9 +7,9 @@
     "dev": "parcel src/index.html",
     "build": "parcel build src/*",
     "airtable": "node airtable",
-    "delete_all": "node scripts/deleteAll",
-    "AMPAS_PIC": "node scripts/AMPAS/Picture",
-    "AMPAS_DIR": "node scripts/AMPAS/Director"
+    "DELETE_ALL": "node scripts/deleteAll",
+    "REFRESH_DB": "node scripts/refreshDb",
+    "AMPAS": "node scripts/AMPAS"
   },
   "repository": {
     "type": "git",

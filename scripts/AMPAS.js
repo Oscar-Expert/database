@@ -1,6 +1,6 @@
-const base = require('../../airtable')
-const end = require('../../db/end');
-const queries = require('../../queries');
+const base = require('../airtable')
+const end = require('../db/end');
+const queries = require('../queries');
 
 const AWARDS_BODY = 'AMPAS';
 
