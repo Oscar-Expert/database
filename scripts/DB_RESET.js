@@ -1,17 +1,16 @@
 const end = require('../db/end');
 const queries = require('../queries');
 
+/**
+ * Completely erases tables AND their structure
+ * Substitutes for a migration
+ * Creates tables according to db/db.sql
+ */
+
 const promises = [
     queries.dropAllTables(),
     queries.refreshAllTables(),
 ];
-
-// Promise.all(promises)
-//     .then(() => {
-//         console.log('success');
-//     })
-//     .catch((err) => console.log(err))
-//     .finally(() => end())
  
 for (let i=0; i<promises.length; i++){
     const executePromise = async() => {
