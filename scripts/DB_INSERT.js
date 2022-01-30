@@ -10,7 +10,7 @@ const queries = require('../queries');
 const insertData = () => {
     // Airtable name goes here
     base('_PROD_LOCK').select({
-        // maxRecords: 10,
+        maxRecords: 1,
         view: "Grid view"
     }).eachPage(async(records, fetchNextPage) => {
 
