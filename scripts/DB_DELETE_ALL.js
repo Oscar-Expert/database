@@ -1,6 +1,11 @@
 const end = require('../db/end');
 const queries = require('../queries');
 
+/**
+ * Delete all entries from the database
+ * - Empties it but doesn't destroy table structure
+ */
+
 const promises = [
     queries.deleteAllMovies(),
     queries.deleteAllPeople(),

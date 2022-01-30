@@ -100,10 +100,12 @@ parser.parseTable = function (element) {
         while (allSpans.hasOwnProperty(spanIdx.toString())) {
           // spanIdx.toString is always zero?
           var val = allSpans[spanIdx.toString()][1];
+        //   console.log('val',val.slice(0, 4)) // thihs coomes out normal . it's being pushed elsewhere
           // val is the values in first column (2011(84th))
           // But it's logging it a number of times so I think it's keeping track of how many cells that left column covers
-          csvLine.push(val);
-
+          if (val[0] !== '[') {
+            csvLine.push(val.slice(0, 4)); // pushing the YEAR
+          }
           // decrease by 1 and remove if all rows are covered
           allSpans[spanIdx.toString()][0] -= 1;
           if (allSpans[spanIdx.toString()][0] == 0) {
@@ -117,6 +119,7 @@ parser.parseTable = function (element) {
         if (typeof cell !== 'undefined') {
             // This operation does this.cell
           var cellText = parseCell.call(this, cell);
+        //   console.log('cellText',cellText) // just everything
 
           var links = cell.querySelectorAll('a'); // gives you a noded list
           var hrefs = ''
@@ -127,10 +130,30 @@ parser.parseTable = function (element) {
                 hrefs += ' ' + href;
             }
           }
-          // JJJ CSV PUSH
-          // This is every cell except it seems to only log something like (2011(84th)) once
-          csvLine.push(cellText);
-          csvLine.push(hrefs)
+
+          // Doesn't make cell from lines that start with [ or #, and trims year rows that say (34th)
+          if (cellText[0] === '['  || cellText[0] === '#') {
+            // do nothing
+          } else if ((cellText[4] === '(' && cellText[9] === ')') || (cellText[5] === '(' && cellText[10] === ')')) {
+              // if a year row, don't push the href for the year, and truncate it
+            csvLine.push(cellText.slice(0, 4));
+          } else {
+              // This check is only for song
+            // if (cellText[0] !== '"') {
+                // const text = cellText.replace('(music)', '&').replace('(music & lyrics)', '').replace('(lyrics)','').replace(';','')
+                csvLine.push(cellText);
+                csvLine.push(hrefs);
+            // }
+            // FOR PRODUCTION DESIGN ONLY -- ELSE DO ONLY THE "ELSE"
+            // if (csvLine.length >= 5) {
+            //     csvLine[3] = csvLine[3] += (' & ' + cellText)
+            //     csvLine[4] = csvLine[4] += (' & ' + hrefs)
+            // } else {
+            //     csvLine.push(cellText);
+            //     csvLine.push(hrefs);
+            // }
+          }
+        //   console.log('csvLine',csvLine)
         }
         if (rowSpan > 1) {
           allSpans[spanIdx.toString()] = [rowSpan - 1, cellText];

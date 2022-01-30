@@ -7,9 +7,14 @@
     "dev": "parcel src/index.html",
     "build": "parcel build src/*",
     "airtable": "node airtable",
-    "delete_all": "node scripts/deleteAll",
-    "AMPAS_PIC": "node scripts/AMPAS/Picture",
-    "AMPAS_DIR": "node scripts/AMPAS/Director"
+    "AT_VALIDATE_CATEGORY": "node scripts/AT_VALIDATE_CATEGORY",
+    "AT_INSERT_STAGING": "node scripts/AT_INSERT_STAGING",
+    "AT_INSERT_PROD": "node scripts/AT_INSERT_PROD",
+    "AT_VALIDATE_PROD": "node scripts/AT_VALIDATE_PROD",
+    "AT_INSERT_PROD_LOCK": "node scripts/AT_INSERT_PROD_LOCK",
+    "DB_DELETE_ALL": "node scripts/DB_DELETE_ALL",
+    "DB_RESET": "node scripts/DB_RESET",
+    "DB_INSERT": "node scripts/DB_INSERT"
   },
   "repository": {
     "type": "git",
