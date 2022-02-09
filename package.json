@@ -15,7 +15,8 @@
     "AT_DUPLICATE_LOCK_INTO_PROD": "node scripts/AT_DUPLICATE_LOCK_INTO_PROD",
     "DB_DELETE_ALL": "node scripts/DB_DELETE_ALL",
     "DB_RESET": "node scripts/DB_RESET",
-    "DB_INSERT": "node scripts/DB_INSERT"
+    "DB_INSERT": "node scripts/DB_INSERT",
+    "DB_STAGING_INSERT": "node scripts/DB_STAGING_INSERT"
   },
   "repository": {
     "type": "git",
