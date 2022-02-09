@@ -10,7 +10,7 @@ const queries = require('../queries');
 const insertData = () => {
     // Airtable name goes here
     base('_PROD_LOCK').select({
-        maxRecords: 1,
+        // maxRecords: 1,
         view: "Grid view"
     }).eachPage(async(records, fetchNextPage) => {
 
@@ -30,12 +30,15 @@ const insertData = () => {
                 // .then(res => console.log('res',res))
                 // .catch(err => console.log('err',err))
 
+                // console.error('FILM',FILM)
+
+                // !! make sure apostrophes are doubled for remote with .replace(/'/g, "''")
                 // Create Award entry if not exists
                 await queries.createAward(YEAR, AWARDS_BODY, CATEGORY)
                 // Create Movie entry if not exists
-                await queries.createMovie(YEAR, FILM_UNIQUE, FILM);
-                // Create Person entry if not exists
-                await queries.createPerson(NOMINEE_UNIQUE, NOMINEE);
+                await queries.createMovie(YEAR, FILM_UNIQUE, FILM.replace(/'/g, "''"));
+                // // Create Person entry if not exists
+                await queries.createPerson(NOMINEE_UNIQUE, NOMINEE.replace(/'/g, "''"));
 
                 // Get Award ID
                 const { data: awardId } = await queries.getAwardId(YEAR, AWARDS_BODY, CATEGORY)

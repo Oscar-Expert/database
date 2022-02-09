@@ -1,6 +1,10 @@
 const db = require('../db/connect');
 const fs = require('fs');
 
+// NOTE: Remote database does not like double quotes
+// However, local does
+// Must do a find + replace for all double quotes
+
 const queries = {};
 
 //////////////////////////
@@ -12,7 +16,7 @@ queries.createMovie = (year, movieWikiUrl, title) => new Promise((resolve, rejec
         INSERT IGNORE INTO Movie
         (wikiUrl, title, year)
         VALUES
-        ("${movieWikiUrl}", "${title}", ${year});
+        ('${movieWikiUrl}', '${title}', ${year});
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         if (res) resolve({ status: 'succes', data: res });
@@ -25,7 +29,7 @@ queries.createPerson = (wikiUrl, person) => new Promise((resolve, reject) => {
         INSERT IGNORE INTO Person
         (wikiUrl, name)
         VALUES
-        ("${wikiUrl}", "${person}")
+        ('${wikiUrl}', '${person}')
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         if (res) resolve({ status: 'succes', data: res });
@@ -51,7 +55,7 @@ queries.createAward = (year, awardsBody, awardsCategory) => new Promise((resolve
         INSERT IGNORE INTO Award
         (year, awardsBody, awardsCategory)
         VALUES
-        (${year}, "${awardsBody}", "${awardsCategory}")
+        (${year}, '${awardsBody}', '${awardsCategory}')
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         if (res) resolve({ status: 'succes', data: res });
@@ -65,7 +69,7 @@ queries.createAward = (year, awardsBody, awardsCategory) => new Promise((resolve
 queries.getMovieId = (wikiUrl) => new Promise((resolve, reject) => {
     db.query(`
         SELECT id FROM Movie
-        WHERE wikiUrl="${wikiUrl}"
+        WHERE wikiUrl='${wikiUrl}'
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         const id = Object.values(res[0])[0];
@@ -77,7 +81,7 @@ queries.getMovieId = (wikiUrl) => new Promise((resolve, reject) => {
 queries.getPersonId = (wikiUrl) => new Promise((resolve, reject) => {
     db.query(`
         SELECT id FROM Person
-        WHERE wikiUrl="${wikiUrl}"
+        WHERE wikiUrl='${wikiUrl}'
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         const id = Object.values(res[0])[0];
@@ -90,8 +94,8 @@ queries.getAwardId = (year, awardsBody, awardsCategory) => new Promise((resolve,
     db.query(`
         SELECT * FROM Award
         WHERE year=${year}
-        AND awardsBody="${awardsBody}"
-        AND awardsCategory="${awardsCategory}"
+        AND awardsBody='${awardsBody}'
+        AND awardsCategory='${awardsCategory}'
     `, (err, res) => {
         if (err) reject({ status: 'error', data: err });
         const id = Object.values(res[0])[0];
