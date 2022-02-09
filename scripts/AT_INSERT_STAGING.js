@@ -13,7 +13,7 @@ const uploadCategory = () => {
     base('CATEGORY').select({
         // maxRecords: 10,
         view: "Grid view",
-        sort: [{field: "NOMINEE_UNIQUE", direction: "desc"}],
+        sort: [{field: "NOMINEES_UNIQUE", direction: "desc"}],
     }).eachPage(async(records, fetchNextPage) => {
 
         const allRecords = [];

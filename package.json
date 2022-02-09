@@ -12,6 +12,7 @@
     "AT_INSERT_PROD": "node scripts/AT_INSERT_PROD",
     "AT_VALIDATE_PROD": "node scripts/AT_VALIDATE_PROD",
     "AT_INSERT_PROD_LOCK": "node scripts/AT_INSERT_PROD_LOCK",
+    "AT_DUPLICATE_LOCK_INTO_PROD": "node scripts/AT_DUPLICATE_LOCK_INTO_PROD",
     "DB_DELETE_ALL": "node scripts/DB_DELETE_ALL",
     "DB_RESET": "node scripts/DB_RESET",
     "DB_INSERT": "node scripts/DB_INSERT"
