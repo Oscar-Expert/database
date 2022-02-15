@@ -10,15 +10,17 @@ A web tool to extract tables from Wiki pages and convert them to CSV. Use it onl
 - Copy the results to your clipboard or download it as CSV file.
 - Put the CSV results into the google sheets spreadsheet and edit errors
     - https://docs.google.com/spreadsheets/d/1hWU-xIQHR5fSL-WhjhpZ03f9Z-rLOzx8tqjktpyRVVE/edit#gid=1852788929
+- It's okay to leave entries that say "EMPTY" for now. Fixed with first step in Airtable
 #### Airtable
 - Before anything, make sure you're aware whether you're inserting into LOCAL (development) or REMOTE (production) databases
 - Import Google spreadsheet into Airtable CATEGORY table
-            xxx - Insert data from spreadsheet into database from Airtable
-                xxx - Run the DB_INSERT_TABLE script and manually set the CATEGORY and AWARDS_BODY
-                    xxx - Also validates your entry. If invalid, make sure to run DB_DELETE_ALL before correcting and running DB_INSERT_TABLE again
+- Complete CATEGORY data
+    - Run [AT_COMPLETE_CATEGORY] to make sure it contains a unique id for every nominee
+    - Helps you find nominee data for nominees that already exist
+    - Then edit the data in the table manually until no EMPTY entries exist
 - Validate CATEGORY data
     - Run [AT_VALIDATE_CATEGORY] to make sure it contains a unique id for every nominee
-- Insert validated CATEGORY data into _STAGING
+- Insert complete & validated CATEGORY data into _STAGING
     - Run [AT_INSERT_STAGING] to restructure data
     - Check that the data looks fine before moving into _PROD
 - ONLY IF not already the same (check record length): Dplicate _PROD_LOCK data into _PROD
@@ -29,7 +31,7 @@ A web tool to extract tables from Wiki pages and convert them to CSV. Use it onl
     - Run [AT_INSERT_PROD] to duplicate _STAGING into _PROD
     - Give it a minute to run through everything
 - Validate _PROD data
-    - Run [AT_VALIDATE_PROD] to make sure the unique values and names are always 1:1, and if they're not, you'll see a console.log
+    - Run [AT_VALIDATE_PROD_1] AND ALL 4 VALIDATE SCRIPTS to make sure the unique values and names for films and nominees are always the same. If they're not, you'll see a console.log
     - Make corrections directly in _PROD_LOCK
 2 options: 
 - 1) Insert validated, FINAL data into _PROD_LOCK

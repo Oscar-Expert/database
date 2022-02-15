@@ -25,10 +25,13 @@ ui.clearBtnCb = function (e) {
   return false;
 }
 
+// JJJ DOWNLOADDS THE CSV FILE
 ui.downloadBtnCb = function (e) {
   var targetId = e.target.getAttribute('data-download-target');
   var el = document.getElementById(targetId);
   var csvString = el.textContent || el.innerText;
+
+  console.log('csvString',csvString)
 
   // Download
   // src: 
@@ -36,12 +39,12 @@ ui.downloadBtnCb = function (e) {
   // 2. https://stackoverflow.com/a/17836529/5732518
   if (window.navigator.msSaveOrOpenBlob) {
     var blob = new Blob([csvString]);
-    window.navigator.msSaveOrOpenBlob(blob, 'myFile.csv');
+    window.navigator.msSaveOrOpenBlob(blob, 'myFile.tsv'); //
   } else {
     var a = document.createElement('a');
-    a.href = 'data:attachment/csv,' + encodeURIComponent(csvString);
+    a.href = 'data:attachment/tsv,' + encodeURIComponent(csvString);
     a.target = '_blank';
-    a.download = targetId + '.csv';
+    a.download = targetId + '.tsv';
     document.body.appendChild(a);
     a.click();
   }
@@ -205,6 +208,8 @@ ui.handleResponse = function (responseText) {
     // helper.addClass('.table2csv-output', 'table2csv-output--active');
     // document.querySelector('.table2csv-output__result').insertAdjacentHTML('beforeend', csvContainer);
   }
+
+//   console.log('allTableEls',allTableEls)
 
   // Moved this outside so everything is in one CSV file
   var blockId = i + 1;

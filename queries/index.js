@@ -104,6 +104,35 @@ queries.getAwardId = (year, awardsBody, awardsCategory) => new Promise((resolve,
 }).catch(e=>console.error('error',e))
 
 
+// Used for getting the unique urls and awards info from nominees whose unique urls were empty
+queries.getNominee = (nomineeName) => new Promise((resolve, reject) => {
+    db.query(`
+        SELECT year, awardsBody, awardsCategory FROM Award
+        WHERE id = any(
+            SELECT awardId FROM Nomination
+            WHERE personId = any(
+                SELECT id FROM Person 
+                WHERE name = '${nomineeName}'
+            )
+        )
+    `, (err, res) => {
+        if (err) reject({ status: 'error', data: err });
+        db.query(`
+            SELECT wikiUrl FROM Person 
+            WHERE name = '${nomineeName}'
+        `, (error, uniqueIdResponse) => {
+            const unique = uniqueIdResponse.length>0 ? uniqueIdResponse[0].wikiUrl : ': NO ENTRY'
+            if (err) reject({ status: 'error', data: error });
+            if (res) resolve({ 
+                status: 'succes', 
+                data: res, 
+                unique: unique,
+            });
+        })
+    })
+}).catch(e=>console.error('error',e))
+
+
 ///////////////////////////////
 /////////// DELETE ////////////
 ///////////////////////////////
