@@ -38,7 +38,7 @@ base('_STAGING').select({
     });
 
     let startCount = 0;
-        endCount = 10;
+    let endCount = 10;
     while (endCount < allRecords.length+10) {
         await base('_PROD')
             .create(allRecords.slice(startCount, endCount), (err,records) => {

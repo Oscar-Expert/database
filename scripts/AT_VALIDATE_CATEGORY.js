@@ -22,7 +22,7 @@ const uploadCategory = () => {
                 const maybeNominees = record.get('NOMINEES');
                 const nominees = maybeNominees
                     ? maybeNominees
-                        .split(/(?:,| and |&)+/)
+                        .split('&')
                         .reduce((acc, cur) => {
                         const trimmed = cur.trim();
                         if (trimmed.length > 0) {
@@ -34,7 +34,7 @@ const uploadCategory = () => {
 
                 const maybeNomineesUnique = record.get('NOMINEES_UNIQUE');
                 const nomineesUnique = maybeNomineesUnique
-                    ? record.get('NOMINEES_UNIQUE').split(' ').filter((s) => s.length>1)
+                    ? record.get('NOMINEES_UNIQUE').split('&').filter((s) => s.length>1)
                     : undefined;
 
                 // Validate one url per person

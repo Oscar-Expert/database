@@ -25,6 +25,8 @@ const validateNomineeNames = (CATEGORY) => {
             if (lastNominee === NOMINEE) {
                 if (lastUnique !== NOMINEE_UNIQUE) {
                     console.error('CHECK ENTRY: ', NOMINEE, NOMINEE_UNIQUE)
+                    console.error('unique compare: ', lastUnique.split(), NOMINEE_UNIQUE.split())
+                    console.error('name compare: ', lastNominee.split(), NOMINEE.split())
                 }
             }
 

@@ -11,7 +11,7 @@ const queries = require('../queries');
 const uploadCategory = () => {
     // Airtable name goes here
     base('CATEGORY').select({
-        maxRecords: 100,
+        // maxRecords: 100,
         view: "Grid view",
         sort: [{field: "NOMINEES", direction: "asc"}],
     }).eachPage(async(records, fetchNextPage) => {
@@ -31,7 +31,6 @@ const uploadCategory = () => {
 
                 nomineesUnique.forEach(async(nomineeId, i) => {
                     const name = nominees[i].trim();
-                    console.log('name',name)
                     if (nomineeId.trim() === 'EMPTY') {
                         const res = await queries.getNominee(name)
                         if (res.status === 'error') {

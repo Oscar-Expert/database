@@ -18,21 +18,26 @@ A web tool to extract tables from Wiki pages and convert them to CSV. Use it onl
     - Run [AT_COMPLETE_CATEGORY] to make sure it contains a unique id for every nominee
     - Helps you find nominee data for nominees that already exist
     - Then edit the data in the table manually until no EMPTY entries exist
+    Replace the word EMPTY with the unique url. Don't get rid of the &
 - Validate CATEGORY data
     - Run [AT_VALIDATE_CATEGORY] to make sure it contains a unique id for every nominee
 - Insert complete & validated CATEGORY data into _STAGING
+    - delete data from _STAGING first
+    - THEN make sure to manually change AWARDS_BODY and CATEGORY
     - Run [AT_INSERT_STAGING] to restructure data
     - Check that the data looks fine before moving into _PROD
-- ONLY IF not already the same (check record length): Dplicate _PROD_LOCK data into _PROD
+- ONLY IF not already the same (check record length): Duplicate _PROD_LOCK data into _PROD
     - First, in AirTable, delete all entries in _PROD
     - Run [AT_DUPLICATE_LOCK_INTO_PROD]
     - Rationale: _PROD should initially be the exact same as _PROD_LOCK. That is the point of PROD. If something is inserted wrong here, it's okay. If something is inserted wrong into _PROD_LOCK, that would be an issue. Always delete _PROD and replenish with exact copy of _PROD_LOCK before adding new data to _PROD
 - Insert _STAGING data into _PROD
-    - Run [AT_INSERT_PROD] to duplicate _STAGING into _PROD
+    - NOTE: Helps to not have a sorting filter on, so if something goes wrong, you can delete the data at the bottom
+    - Run [AT_INSERT_PROD] to copy _STAGING into _PROD
     - Give it a minute to run through everything
 - Validate _PROD data
     - Run [AT_VALIDATE_PROD_1] AND ALL 4 VALIDATE SCRIPTS to make sure the unique values and names for films and nominees are always the same. If they're not, you'll see a console.log
-    - Make corrections directly in _PROD_LOCK
+    - TIP: Editing directly in CATEGORY can save time if data needs to be re-inserted
+    - Edit directly in _PROD
 2 options: 
 - 1) Insert validated, FINAL data into _PROD_LOCK
     - Note: you could do this step, or you could do the ALT step below instead
@@ -43,12 +48,16 @@ A web tool to extract tables from Wiki pages and convert them to CSV. Use it onl
     - Run [AT_INSERT_STAGING_INTO_PROD_LOCK]
 - Note: IF you never altered _PROD_LOCK, you should be able to keep _PROD the same as well, since it has the same data as _PROD_LOCK
 #### Insert Into Databse
+- Before connecting, make sure you're on the right db (local or remote, see [connect.js])
 1) Option to erase ALL data in production and replace it with _PROD_LOCK
 - First, delete all entries from database
     - Run [DB_DELETE_ALL]
+- If inserting a category with a name we don't yet have entries for, like if DRAMA_PICTURE is new, make sure to update the ENUM in [db.sql]
+    - Note: Last item in ENUM has to have no comma like JSON else it will throw error
 - If running a migration is necessary, run [DB_RESET]
 - Insert the data
     - Run [DB_INSERT]
+    - Leave it going for a while like 10 minutes
 2) Option to insert only the _STAGING data IF YOU ARE CERTAIN IT HAS BEEN VALIDATED IN _PROD
 - Run [DB_STAGING_INSERT]
 - Note: if you fuck up here, you'll have to do the first option and delete everything

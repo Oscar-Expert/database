@@ -37,12 +37,7 @@ CREATE TABLE `Award` (
     `year` INTEGER NOT NULL,
     `awardsBody` ENUM(
         'AMPAS', 
-        'GG', 
-        'BAFTA', 
-        'CC', 
-        'PGA', 
-        'DGA', 
-        'SAG'
+        'GG'
     ) NOT NULL,
     `awardsCategory` ENUM(
         'PICTURE',
@@ -64,7 +59,8 @@ CREATE TABLE `Award` (
         'MAKEUP',
         'INTERNATIONAL',
         'DOCUMENTARY',
-        'ANIMATED'
+        'ANIMATED',
+        'DRAMA_PICTURE'
     ) NOT NULL,
     PRIMARY KEY (`id`),
     CONSTRAINT UC_Award UNIQUE (year, awardsBody, awardsCategory)

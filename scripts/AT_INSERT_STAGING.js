@@ -5,8 +5,8 @@ const end = require('../db/end');
  * Restructures data from CATEGORY and inserts into _STAGING
  */
 
- const AWARDS_BODY = 'AMPAS'; // SET MANUALLY
- const CATEGORY = 'PICTURE'; // SET MANUALLY
+ const AWARDS_BODY = 'GG'; // SET MANUALLY
+ const CATEGORY = 'DRAMA_PICTURE'; // SET MANUALLY
 
 const uploadCategory = () => {
     // Airtable name goes here
@@ -28,17 +28,25 @@ const uploadCategory = () => {
             const maybeNomineesUnique = record.get('NOMINEES_UNIQUE');
             const NOMINEES = maybeNominees
                 ? maybeNominees
-                    .split(/(?:,| and |&)+/)
+                    .split('&')
                     .reduce((acc, cur) => {
-                    const trimmed = cur.trim();
-                    if (trimmed.length > 0) {
-                        acc.push(trimmed);
-                    }
-                    return acc;
-                }, [])
+                        const trimmed = cur.trim();
+                        if (trimmed.length > 0) {
+                            acc.push(trimmed);
+                        }
+                        return acc;
+                    }, [])
                 : undefined;
             const NOMINEES_UNIQUE = maybeNomineesUnique
-                ? record.get('NOMINEES_UNIQUE').split(' ').filter((s) => s.length>1)
+                ? maybeNomineesUnique
+                    .split('&')
+                    .reduce((acc, cur) => {
+                        const trimmed = cur.trim();
+                        if (trimmed.length > 0) {
+                            acc.push(trimmed);
+                        }
+                        return acc;
+                    }, [])
                 : undefined;
             
             // Validate one url per person
