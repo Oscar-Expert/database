@@ -4,12 +4,13 @@ A web tool to extract tables from Wiki pages and convert them to CSV. Use it onl
 ## How to use
 
 #### Scraping Data
-- Run the dev server
+- Run the dev server "npm run dev"
 - Enter the URL of the Wikipedia page containing the table(s).
 - Press "Convert".
 - Copy the results to your clipboard or download it as CSV file.
 - Put the CSV results into the google sheets spreadsheet and edit errors
     - https://docs.google.com/spreadsheets/d/1hWU-xIQHR5fSL-WhjhpZ03f9Z-rLOzx8tqjktpyRVVE/edit#gid=1852788929
+- Fix any "EMPTY" movie rows. Make sure "MOVIE_COLUMN" is set to the right column or it will incorrectly parse "and" out of movie columns
 - It's okay to leave entries that say "EMPTY" for now. Fixed with first step in Airtable
 #### Airtable
 - Before anything, make sure you're aware whether you're inserting into LOCAL (development) or REMOTE (production) databases

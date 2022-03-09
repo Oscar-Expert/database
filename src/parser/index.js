@@ -1,7 +1,7 @@
 
 var parser = {};
 
-const MOVIE_COLUMN = 1; // likely 1 or 3
+const MOVIE_COLUMN = 5; // likely 1 or 3
 
 function parseCell (cellItem) {
 
@@ -55,10 +55,12 @@ parser.parseTable = function (element) {
   var rows = element.querySelectorAll('tr');
   // get maximum number of cols
   var colsCount = getMaxColumns(rows);
+  var rowsLen = rows.length;
   var allSpans = {};
 
+
   // loop tr
-  for (var rowsIdx = 0, rowsLen = rows.length; rowsIdx < rowsLen; rowsIdx++) {
+  for (var rowsIdx = 0; rowsIdx < rowsLen; rowsIdx++) {
     var row = rows[rowsIdx];
     var csvLine = [];
     // var csvLines = [];
@@ -92,8 +94,8 @@ parser.parseTable = function (element) {
         var attr2 = cell.getAttribute('colSpan')
         if (attr2) {
           colSpan = parseInt(attr2);
-        }
-      }
+        } 
+    }
 
       // loop colSpan, set rowSpan value
       for (var j = 0; j < colSpan; j++) {
@@ -125,16 +127,19 @@ parser.parseTable = function (element) {
         //   console.log('cellText',cellText)
           // Doesn't make cell from lines that start with [ or #, and trims year rows that say (34th)
           if (cellText[0] === '['  || cellText[0] === '#') {
-            return; // do nothing
+             break; // do nothing
           } else if ((cellText[4] === '(' && cellText[9] === ')') || (cellText[5] === '(' && cellText[10] === ')')) {
               // if a year row, don't push the href for the year, and truncate it
-            return csvLine.push(cellText.slice(0, 4));
+             csvLine.push(cellText.slice(0, 4));
+             break;
           } 
           var links = cell.querySelectorAll('a'); // gives you a noded list
         //   console.log('links',links)
           
         // a is a list of the different entries in a cell.
         // if it's a movie column we don't want it to parse that for commas or "and"
+        console.log('cellText',cellText)
+        console.log('csvLine.length',csvLine.length)
           const a = csvLine.length === MOVIE_COLUMN
             ? cellText
                 .replace(/\\/g, '').replace(/"/g,"")
@@ -248,8 +253,8 @@ parser.parseTable = function (element) {
         if (rowSpan > 1) {
           allSpans[spanIdx.toString()] = [rowSpan - 1, cellText];
         }
-        spanIdx += 1;            
-        
+        spanIdx += 1;
+
       }
     }
     csvLine.push(winner);
